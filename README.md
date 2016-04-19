@@ -11,4 +11,4 @@ And on python-uinput
 
 Make sure `uinput` module is loaded: `sudo modprobe uinput`. Run script with sudo for permissions.
 
-To link classifier output to LSL output in openvibe: set `` in `~/.config/openvibe/openviberc` and use a "Matrix Transpose" box in-between.
+To link classifier output to LSL output in openvibe: set `Designer_AllowUpCastConnection = True` in `~/.config/openvibe/openviberc` and use a "Matrix Transpose" box in-between.
