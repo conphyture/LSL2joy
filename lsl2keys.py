@@ -8,11 +8,13 @@ stream_name = "hyperplane"
 # rough prototype, we'll use a simple threshold for now
 threshold = 0.1
 
-# one virtual keyboard
-device = uinput.Device([
-        uinput.KEY_LEFT,
-        uinput.KEY_RIGHT,
-        ])
+# one virtual joystick
+events = (
+    uinput.BTN_JOYSTICK,
+    uinput.ABS_X + (0, 255, 0, 0),
+    uinput.ABS_Y + (0, 255, 0, 0),
+    )
+device = uinput.Device(events)
 
 # first resolve an EEG stream on the lab network
 print("looking for LSL stream named [" + stream_name +"]")
@@ -31,8 +33,9 @@ while True:
     value = sample[0]
     if value <= -threshold:
       print "left"
-      device.emit_click(uinput.KEY_LEFT)
+      device.emit(uinput.ABS_X, 5, syn=False)
     if value >= threshold:
       print "right"
-      device.emit_click(uinput.KEY_RIGHT)
+      device.emit(uinput.ABS_X, -5, syn=False)
+
     
