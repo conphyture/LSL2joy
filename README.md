@@ -4,9 +4,11 @@ Depends on LSL
 
 * pip install pylsl --user
 
-And on pyautogui
+And on python-uinput
 
-* sudo apt-get install python-xlib
-* pip install pyautogui --user
+* sudo apt-get install libudev-dev
+* pip install python-uinput --user
+
+Make sure `uinput` module is loaded: `sudo modprobe uinput`. Run script with sudo for permissions.
 
 To link classifier output to LSL output in openvibe: set `` in `~/.config/openvibe/openviberc` and use a "Matrix Transpose" box in-between.

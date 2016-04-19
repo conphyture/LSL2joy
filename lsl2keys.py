@@ -1,12 +1,18 @@
 
 from pylsl import StreamInlet, resolve_stream
-import pyautogui
+import uinput
 
 # stream name of classifier output in openvibe
 stream_name = "hyperplane"
 
 # rough prototype, we'll use a simple threshold for now
 threshold = 0.1
+
+# one virtual keyboard
+device = uinput.Device([
+        uinput.KEY_LEFT,
+        uinput.KEY_RIGHT,
+        ])
 
 # first resolve an EEG stream on the lab network
 print("looking for LSL stream named [" + stream_name +"]")
@@ -25,8 +31,8 @@ while True:
     value = sample[0]
     if value <= -threshold:
       print "left"
-      pyautogui.press('left')
+      device.emit_click(uinput.KEY_LEFT)
     if value >= threshold:
       print "right"
-      pyautogui.press('right')
+      device.emit_click(uinput.KEY_RIGHT)
     
