@@ -38,7 +38,11 @@ while True:
     # retrieve first channel
     value = sample[0]
     # convert to angle, from -1,1 to 0, 255
-    joy_angle = int(value + 1. * (255/2))
+    joy_angle = int((value + 1.) * (255/2))
+    if joy_angle < 0:
+        joy_angle = 0
+    if joy_angle > 255:
+        joy_angle = 255
     print "output angle:", joy_angle
     device.emit(uinput.ABS_X, joy_angle) 
 
