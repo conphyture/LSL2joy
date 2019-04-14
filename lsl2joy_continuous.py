@@ -3,6 +3,9 @@ from pylsl import StreamInlet, resolve_stream
 import uinput, time
 
 # map output to angles, continuous
+# TODO: clamp input?
+# TODO: command line parameters for some options
+# TODO: propose transfer functions other than linear?
 
 # how many seconds without samples should we wait before we timeout?
 LSL_DECO_TIMEOUT=2
@@ -21,9 +24,16 @@ events = (
     )
 device = uinput.Device(events)
 
+# output range in X
+X_MIN = 0
+X_MAX = 255
+# neutral position on start
+X_CENTER = 128
+Y_CENTER = 128
+
 # center
-device.emit(uinput.ABS_X, 128)
-device.emit(uinput.ABS_Y, 128)
+device.emit(uinput.ABS_X, X_CENTER)
+device.emit(uinput.ABS_Y, Y_CENTER)
 
 inlet = None
 
@@ -71,11 +81,11 @@ while True:
     # retrieve first channel
     value = sample[0]
     # convert to angle, from -1,1 to 0, 255
-    joy_angle = int((value + 1.) * (255/2))
-    if joy_angle < 0:
-        joy_angle = 0
-    if joy_angle > 255:
-        joy_angle = 255
+    joy_angle = int( (value + 1.)/2 * (X_MAX - X_MIN) ) + X_MIN
+    if joy_angle < X_MIN:
+        joy_angle = X_MIN
+    if joy_angle > X_MAX:
+        joy_angle = X_MAX
     print "output angle:", joy_angle
     device.emit(uinput.ABS_X, joy_angle) 
 
